@@ -13,4 +13,4 @@ control.o: control.c shared.h
 	gcc -c control.c
 
 clean:
-	rm *.o
+	rm *.o writer control

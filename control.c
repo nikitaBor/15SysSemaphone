@@ -57,10 +57,10 @@ int main(int argc, char *argv[]) {
   } else if(!strcmp(command, "-v")) {
 
     int f;
-    if(!(f = fork())) {
+    if(!(f = fork())) {//child
       if(execlp("cat", "cat", STORY_FILE, NULL))
 	handle_error();
-    } else if (f > 0) {
+    } else if (f > 0) {//parent
       int status;
       wait(&status);
     } else {
@@ -70,20 +70,13 @@ int main(int argc, char *argv[]) {
   } else if(!strcmp(command, "-r")) {
     
     int f;
-    if(!(f = fork())) {
+    if(!(f = fork())) {//child
 
       /* Read contents of file */
-      if(!(f = fork())) {
 	if((execlp("cat", "cat", STORY_FILE, NULL)) < 0)
-	  handle_error();
-      } else if (f > 0) {
-	int status;
-	wait(&status);
-      } else {
-	handle_error();
-      }      
+	  handle_error();   
 
-    } else if (f > 0){
+    } else if (f > 0){//parent
       int status;
       wait(&status);
 
@@ -101,7 +94,7 @@ int main(int argc, char *argv[]) {
 
       /* Remove file */
       remove(STORY_FILE);
-      printf("Story file removed\n");
+      printf("------------------------------\nStory file removed\n");
 
       /* Remove semaphore */
       if(semctl(sem_id, 1, IPC_RMID) < 0)
